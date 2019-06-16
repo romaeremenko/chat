@@ -1,5 +1,9 @@
 
 @media screen and (max-width: 1440px) {
+    .header {
+        background-size: 8%;
+    }
+
     .sairaRegular18 {
         font-size: 14px;
         font-weight: 400;
@@ -53,6 +57,11 @@
 }
 
 @media screen and (max-width: 1024px) {
+    .header {
+        min-height: 45px;
+        max-height: 45px;
+    }
+
     .sairaRegular18 {
         font-size: 9px;
         font-weight: 400;
@@ -105,12 +114,26 @@
         -moz-border-radius: 49px;
         border-radius: 49px;
     }
+
+    .counter {
+        color: #FFFFFF;
+        z-index: 2;
+        max-width: 16px;
+        min-width: 15px;
+        max-height: 15px;
+        min-height: 15px;
+        -webkit-border-radius: 18px;
+        -moz-border-radius: 18px;
+        border-radius: 18px;
+        background: #FF0000;
+    }
 }
 
 @media screen and (max-width: 768px) {
     .header {
         min-height: 50px;
         max-height: 50px;
+        background-size: 8%;
     }
 
     .containerForInfo {
@@ -137,5 +160,14 @@
         -webkit-border-radius: 49px;
         -moz-border-radius: 49px;
         border-radius: 49px;
+    }
+
+    .chatTabs::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    .chatTabs::-webkit-scrollbar-thumb {
+        border-radius: 2px;
+        background: rgba(0, 0, 0, .1);
     }
 }
