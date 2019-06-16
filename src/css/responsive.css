@@ -1,0 +1,141 @@
+
+@media screen and (max-width: 1440px) {
+    .sairaRegular18 {
+        font-size: 14px;
+        font-weight: 400;
+    }
+
+    .sairaLight14 {
+        font-size: 11px;
+        font-weight: 300;
+    }
+
+    .containerForAvatar {
+        max-width: 70px;
+        min-width: 70px;
+        max-height: 72px;
+        min-height: 72px;
+    }
+
+    .avatar {
+        max-width: 56px;
+        min-width: 56px;
+        max-height: 56px;
+        min-height: 56px;
+        -webkit-border-radius: 28px;
+        -moz-border-radius: 28px;
+        border-radius: 28px;
+    }
+
+    .containerForInfo {
+        max-width: 137px;
+        min-width: 137px;
+    }
+
+    .containerName {
+        max-width: 137px;
+        min-width: 137px;
+    }
+
+    .onlineTime {
+        margin-top: 4px;
+    }
+
+    .changeInfo {
+        max-width: 137px;
+        min-width: 137px;
+        max-height: 17px;
+        min-height: 17px;
+        -webkit-border-radius: 74px;
+        -moz-border-radius: 74px;
+        border-radius: 74px;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .sairaRegular18 {
+        font-size: 9px;
+        font-weight: 400;
+    }
+
+    .sairaLight14 {
+        font-size: 7px;
+        font-weight: 300;
+    }
+
+    .containerForAvatar {
+        max-width: 48px;
+        min-width: 48px;
+        max-height: 48px;
+        min-height: 48px;
+    }
+
+    .avatar {
+        max-width: 38px;
+        min-width: 38px;
+        max-height: 38px;
+        min-height: 38px;
+        -webkit-border-radius: 19px;
+        -moz-border-radius: 19px;
+        border-radius: 19px;
+    }
+
+    .containerForInfo {
+        margin-bottom: 10px;
+        max-width: 98px;
+        min-width: 98px;
+    }
+
+    .containerName {
+        max-width: 98px;
+        min-width: 98px;
+    }
+
+    .onlineTime {
+        margin-top: 2px;
+        margin-left: auto;
+    }
+
+    .changeInfo {
+        max-width: 98px;
+        min-width: 98px;
+        max-height: 11px;
+        min-height: 11px;
+        -webkit-border-radius: 49px;
+        -moz-border-radius: 49px;
+        border-radius: 49px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .header {
+        min-height: 50px;
+        max-height: 50px;
+    }
+
+    .containerForInfo {
+        margin-bottom: 10px;
+        max-width: 88px;
+        min-width: 88px;
+    }
+
+    .containerName {
+        max-width: 88px;
+        min-width: 88px;
+    }
+
+    .onlineTime {
+        margin-top: 2px;
+        margin-left: auto;
+    }
+
+    .changeInfo {
+        max-width: 88px;
+        min-width: 88px;
+        max-height: 11px;
+        min-height: 11px;
+        -webkit-border-radius: 49px;
+        -moz-border-radius: 49px;
+        border-radius: 49px;
+    }
+}

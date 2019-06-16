@@ -1,0 +1,137 @@
+body {
+    margin: 0;
+    font-family: 'Saira', sans-serif;
+}
+
+.div {
+    margin: 0;
+}
+
+.header {
+    display: flex;
+    min-height: 75px;
+    max-height: 76px;
+    /* max-height: 95px; */
+    background: #FFB800;
+    background-image: url("../img/logo.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    filter: drop-shadow(4px 0px 4px hsl(0,0%,60%));
+}
+
+.sairaRegular18 {
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.sairaLight14 {
+    font-size: 14px;
+    font-weight: 300;
+}
+
+.chatBox {
+    height: 1080px;
+    display: flex;
+}
+
+.account {
+    margin-left: auto;
+    min-width: 20%;
+    max-width: 20%;
+    background: #FFA528;
+}
+
+.containerForProfile {
+    display: flex;
+    overflow:hidden;
+}
+
+.containerForAvatar {
+    max-width: 96px;
+    min-width: 96px;
+    max-height: 96px;
+    min-height: 96px;
+}
+
+.avatar {
+    max-width: 60px;
+    min-width: 60px;
+    max-height: 60px;
+    min-height: 60px;
+    /* min-height: 76px; */
+    -webkit-border-radius: 38px;
+    -moz-border-radius: 38px;
+    border-radius: 38px;
+    background: #EED8D8;
+}
+
+.containerForInfo {
+    max-width: 176px;
+    min-width: 176px;
+    margin: auto 0;
+}
+
+.containerName {
+    max-width: 176px;
+    min-width: 176px;
+    display: inline-flex;
+}
+
+.name {
+    color: #000000;
+}
+
+.onlineTime {
+    margin-top: 4px;
+    color: rgba(0,0,0, 0.54);
+    margin-left: auto;
+}
+
+.changeInfo {
+    max-width: 176px;
+    min-width: 176px;
+    max-height: 23px;
+    min-height: 23px;
+    -webkit-border-radius: 98px;
+    -moz-border-radius: 98px;
+    border-radius: 98px;
+    color: rgba(0,0,0, 0.54);
+    background: #F17373;
+}
+
+.header {
+
+}
+
+.globalTime {
+    min-width: 5%;
+    max-width: 5%;
+    background: #FF6200;
+    color: #FFFFFF;
+    overflow:hidden;
+}
+
+.chatTabs {
+    min-width: 25%;
+    max-width: 25%;
+    background: #FFF;
+}
+
+.chat {
+    min-width: 50%;
+    max-width: 50%;
+    box-shadow: inset 0px 0px 5px hsl(0,0%,80%);
+    background: linear-gradient(to bottom, #FFF, #FFE43C);
+}
+
+.members {
+    min-width: 25%;
+    max-width: 25%;
+    background: #FFF;
+}
+
+.alignCenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
