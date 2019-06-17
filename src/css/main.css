@@ -170,12 +170,79 @@ a {
     background: rgba(255,246,198, .5);
 }
 
-.chat {
+.chatForm {
     min-width: 50%;
     max-width: 50%;
     height: 100vh;
+    position: relative;
     box-shadow: inset 0px 0px 5px hsl(0,0%,80%);
     background: linear-gradient(to bottom, #FFF, #FFE43C);
+}
+
+.chatMessage {
+    display: flex;
+    flex-flow: row wrap;
+    margin: 2% 5%;
+}
+
+.chatMessage p {
+    padding: 2%;
+    /* padding: 10px; */
+}
+
+.chatAvatar {
+    min-width: 80px;
+    min-height: 80px;
+    border-radius: 50%;
+    margin: 1%;
+    background-color: #F28E8E;
+}
+
+.boxForMessage {
+    width: 90%;
+    margin: auto 0;
+}
+
+.boxForMessageSelf {
+    order: -1;
+    text-align: right;
+}
+
+.messageText {
+    width: 90%;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    background: #FFFFFF;
+}
+
+.boxForMessage .name {
+    padding: 2% 2% 0 2%;
+    /* padding: 10px 0 0 10px; */
+}
+
+.boxForMessage .timeMessage {
+    padding: 0 0 0 10px;
+}
+
+.messageTextSelf {
+    margin-left: auto;
+    background-color: #FFB800;
+}
+
+.dateMessage {
+    width: 10%;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    margin: auto;
+    border-radius: 10px;
+    background: #F17373;
+}
+
+.alignMessage {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
 }
 
 .members {
@@ -216,6 +283,17 @@ a {
     background-color: #C4C4C4;
 }
 
+.chatHeader {
+    display: inline-flex;
+    position: absolute;
+    top: 0;
+    z-index: 2;
+    color: #000000;
+    height: 25px;
+    width: 100%;
+    background-color: #EED8D8;
+}
+
 .chatName {
     position: absolute;
     margin: auto;
@@ -230,6 +308,12 @@ a {
 
 .chatMembers {
     background: #FFF;
+    height: 90vh;
+    margin-top: 25px;
+}
+
+.chatLogs {
+    background: linear-gradient(to bottom, rgba(255, 191, 27, .13), rgba(253, 203, 74, 1));
     height: 90vh;
     margin-top: 25px;
 }

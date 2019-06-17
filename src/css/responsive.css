@@ -1,4 +1,18 @@
 
+@media screen and (max-width: 2550px) {
+    .chatAvatar {
+        min-width: 70px;
+        min-height: 70px;
+    }
+}
+
+@media screen and (max-width: 1970px) {
+    .chatAvatar {
+        min-width: 45px;
+        min-height: 45px;
+    }
+}
+
 @media screen and (max-width: 1440px) {
     .header {
         background-size: 8%;
@@ -53,6 +67,11 @@
         -webkit-border-radius: 74px;
         -moz-border-radius: 74px;
         border-radius: 74px;
+    }
+
+    .chatAvatar {
+        min-width: 30px;
+        min-height: 30px;
     }
 }
 
@@ -132,7 +151,15 @@
         height: 20px;
     }
 
+    .chatHeader {
+        height: 20px;
+    }
+
     .chatMembers {
+        margin-top: 20px;
+    }
+
+    .chatLog {
         margin-top: 20px;
     }
 
@@ -143,6 +170,11 @@
     .scroll::-webkit-scrollbar-thumb {
         border-radius: 3px;
         background: rgba(0, 0, 0, .1);
+    }
+
+    .chatAvatar {
+        min-width: 25px;
+        min-height: 25px;
     }
 }
 
@@ -192,7 +224,26 @@
         height: 18px;
     }
 
+    .chatHeader {
+        height: 18px;
+    }
+
     .chatMembers {
         margin-top: 18px;
+    }
+
+    .chatLog {
+        margin-top: 18px;
+    }
+
+    .chatAvatar {
+        min-width: 20px;
+        min-height: 20px;
+    }
+}
+
+@media screen and (max-width: 570px) {
+    .chatAvatar {
+        display: none;
     }
 }
