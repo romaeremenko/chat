@@ -2,18 +2,23 @@ import 'babel-polyfill';
 import _ from 'lodash';
 
 import './../sass/styles.scss';
+import './../sass/responsive.scss';
+import sendIcon from './../images/send.svg';
+import boldIcon from './../images/bold.svg';
+import italicIcon from './../images/italic.svg';
+import underlineIcon from './../images/underline.svg';
 
-const getHeader = () => {
-  const helloWebpack = _.join(['Hello', 'webpack!'], ' ');
-  console.log(helloWebpack);
-  const element = document.createElement('h1');
+var sendImg = document.getElementById('sendIcon');
+sendImg.src = sendIcon;
 
-  element.innerHTML = helloWebpack;
+var boldImg = document.getElementById('boldIcon');
+boldImg.src = boldIcon;
 
-  return element;
-};
+var italicImg = document.getElementById('italicIcon');
+italicImg.src = italicIcon;
 
-document.body.appendChild(getHeader());
+var underlineImg = document.getElementById('underlineIcon');
+underlineImg.src = underlineIcon;
 
 const o = {
   foo: {

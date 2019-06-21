@@ -1,0 +1,393 @@
+@media screen and (max-width: 2550px) {
+  .chatAvatar {
+    min-width: 70px;
+    min-height: 70px;
+  }
+
+  .messageText {
+    width: 91%;
+  }
+}
+
+@media screen and (max-width: 2100px) {
+
+  .messageText {
+    width: 89%;
+  }
+}
+
+@media screen and (max-width: 1970px) {
+  .chatAvatar {
+    min-width: 45px;
+    min-height: 45px;
+  }
+
+  .messageText {
+    width: 92%;
+  }
+}
+
+@media screen and (max-width: 1730px) {
+  .messageText {
+    width: 92%;
+  }
+}
+
+@media screen and (max-width: 1660px) {
+  .sairaLightCharacters {
+    font-size: 12px;
+    font-weight: 300;
+  }
+
+  .messageText {
+    width: 91%;
+  }
+}
+
+@media screen and (max-width: 1440px) {
+  .header {
+    background-size: 8%;
+  }
+
+  .sairaRegular18 {
+    font-size: 14px;
+    font-weight: 400;
+  }
+
+  .sairaLight14 {
+    font-size: 11px;
+    font-weight: 300;
+  }
+
+  .sairaLightCharacters {
+    font-size: 11px;
+    font-weight: 300;
+  }
+
+  .containerForAvatar {
+    max-width: 70px;
+    min-width: 70px;
+    max-height: 72px;
+    min-height: 72px;
+  }
+
+  .avatar {
+    max-width: 56px;
+    min-width: 56px;
+    max-height: 56px;
+    min-height: 56px;
+    -webkit-border-radius: 28px;
+    -moz-border-radius: 28px;
+    border-radius: 28px;
+  }
+
+  .containerForInfo {
+    max-width: 137px;
+    min-width: 137px;
+  }
+
+  .containerName {
+    max-width: 137px;
+    min-width: 137px;
+  }
+
+  .onlineTime {
+    margin-top: 4px;
+  }
+
+  .changeInfo {
+    max-width: 137px;
+    min-width: 137px;
+    max-height: 17px;
+    min-height: 17px;
+    -webkit-border-radius: 74px;
+    -moz-border-radius: 74px;
+    border-radius: 74px;
+  }
+
+  .chatAvatar {
+    min-width: 30px;
+    min-height: 30px;
+  }
+
+  .messageText {
+    width: 93%;
+  }
+}
+
+@media screen and (max-width: 1410px){
+  .messageText {
+    width: 92%;
+  }
+}
+
+@media screen and (max-width: 1330px) {
+  .sairaLightCharacters {
+    font-size: 10px;
+    font-weight: 300;
+  }
+
+  .messageText {
+    width: 92%;
+  }
+}
+
+@media screen and (max-width: 1250px) {
+  .sairaLightCharacters {
+    font-size: 9px;
+    font-weight: 300;
+  }
+
+  .inputMessage form {
+    height: 23px;
+    width: 75%;
+    display: flex;
+    padding: 0;
+  }
+
+  .inputMessage input {
+    width: 100%;
+    height: 23px;
+    border-radius: 10px;
+    border: none;
+    padding: 0 2%;
+  }
+}
+
+
+@media screen and (max-width: 1050px) {
+
+  .messageText {
+    width: 91%;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .header {
+    min-height: 45px;
+    max-height: 45px;
+  }
+
+  .sairaRegular18 {
+    font-size: 9px;
+    font-weight: 400;
+  }
+
+  .sairaLightCharacters {
+    font-size: 7px;
+    font-weight: 300;
+  }
+
+  .sairaLight14 {
+    font-size: 7px;
+    font-weight: 300;
+  }
+
+  .containerForAvatar {
+    max-width: 48px;
+    min-width: 48px;
+    max-height: 48px;
+    min-height: 48px;
+  }
+
+  .avatar {
+    max-width: 38px;
+    min-width: 38px;
+    max-height: 38px;
+    min-height: 38px;
+    -webkit-border-radius: 19px;
+    -moz-border-radius: 19px;
+    border-radius: 19px;
+  }
+
+  .containerForInfo {
+    margin-bottom: 10px;
+    max-width: 98px;
+    min-width: 98px;
+  }
+
+  .containerName {
+    max-width: 98px;
+    min-width: 98px;
+  }
+
+  .onlineTime {
+    margin-top: 2px;
+    margin-left: auto;
+  }
+
+  .changeInfo {
+    max-width: 98px;
+    min-width: 98px;
+    max-height: 11px;
+    min-height: 11px;
+    -webkit-border-radius: 49px;
+    -moz-border-radius: 49px;
+    border-radius: 49px;
+  }
+
+  .counter {
+    color: #FFFFFF;
+    z-index: 2;
+    max-width: 16px;
+    min-width: 15px;
+    max-height: 15px;
+    min-height: 15px;
+    -webkit-border-radius: 18px;
+    -moz-border-radius: 18px;
+    border-radius: 18px;
+    background: #FF0000;
+  }
+
+  .chatNameHeader {
+    height: 20px;
+  }
+
+  .chatHeader {
+    height: 20px;
+  }
+
+  .chatMembers {
+    margin-top: 20px;
+  }
+
+  .chatLogs {
+    margin-top: 20px;
+  }
+
+  .scroll::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .scroll::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+    background: rgba(0, 0, 0, .1);
+  }
+
+  .chatAvatar {
+    min-width: 25px;
+    min-height: 25px;
+  }
+
+  .inputMessage form {
+    height: 25px;
+    width: 75%;
+    display: flex;
+    padding: 0;
+  }
+
+  .inputMessage input {
+    width: 100%;
+    height: 25px;
+    border-radius: 10px;
+    border: none;
+    padding: 0 2%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .header {
+    min-height: 50px;
+    max-height: 50px;
+    background-size: 8%;
+  }
+
+  .containerForInfo {
+    margin-bottom: 10px;
+    max-width: 88px;
+    min-width: 88px;
+  }
+
+  .containerName {
+    max-width: 88px;
+    min-width: 88px;
+  }
+
+  .onlineTime {
+    margin-top: 2px;
+    margin-left: auto;
+  }
+
+  .changeInfo {
+    max-width: 88px;
+    min-width: 88px;
+    max-height: 11px;
+    min-height: 11px;
+    -webkit-border-radius: 49px;
+    -moz-border-radius: 49px;
+    border-radius: 49px;
+  }
+
+  .scroll::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  .scroll::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+    background: rgba(0, 0, 0, .1);
+  }
+
+  .chatNameHeader {
+    height: 18px;
+  }
+
+  .chatHeader {
+    height: 18px;
+  }
+
+  .chatMembers {
+    margin-top: 18px;
+  }
+
+  .chatLogs {
+    margin-top: 18px;
+  }
+
+  .chatAvatar {
+    min-width: 20px;
+    min-height: 20px;
+  }
+
+  .inputMessage form {
+    height: 20px;
+    width: 75%;
+    display: flex;
+    padding: 0;
+  }
+
+  .inputMessage input {
+    width: 100%;
+    height: 20px;
+    border-radius: 10px;
+    border: none;
+    padding: 0 2%;
+  }
+}
+
+@media screen and (max-width: 570px) {
+  .chatAvatar {
+    display: none;
+  }
+}
+
+@media screen and (max-height: 700px) {
+  .inputMessage form {
+    height: 20px;
+    width: 75%;
+    display: flex;
+    padding: 0;
+  }
+
+  .inputMessage input {
+    width: 100%;
+    height: 20px;
+    border-radius: 10px;
+    border: none;
+    padding: 0 1%;
+  }
+
+  .inputMessage input::placeholder {
+    font-size: 9px;
+    color: rgba(0, 0, 0, .54);
+  }
+}
