@@ -8,17 +8,30 @@
 </head>
 <body>
 <div>
+    <div class="bg-modal">
+
+        <div class="modal-content">
+            <div class="header-modal">Войдите</div>
+            <form action="">
+                <input type="text" class="inputname" placeholder="Имя Фамилия" id="uname">
+                <button type="button" id="buttonEnter">Вход</button>
+                <button type="button" id="buttonReg">Регистрация</button>
+                <p id="check"></p>
+            </form>
+        </div>
+    </div>
+
     <div class="header">
         <div class="account alignCenter">
             <div class="containerForProfile alignCenter">
                 <div class="containerForAvatar alignCenter">
-                    <div class="avatar avatarProfile"></div>
+                    <div class="avatar avatarProfile">
+                        <button type="button" class="exit" onClick="window.location.reload();"></button>
+                    </div>
                 </div>
                 <div class="containerForInfo">
                     <div class="containerName">
-                        <div class="name sairaRegular18">
-                            Роман
-                        </div>
+                        <div id="nameuser" class="name sairaRegular18"></div>
                         <div class="onlineTime sairaLight14">
                             в сети 15 минут
                         </div>
@@ -553,133 +566,14 @@
                 <div class="chatName sairaRegular18">
                     УЧАСТНИКИ
                 </div>
-                <div class="onlineMembers sairaRegular18">
-                    6 В СЕТИ
+                <div id="counter" class="onlineMembers sairaRegular18">
                 </div>
             </div>
-            <div class="chatMembers scroll">
-                <div class="alignCenter">
-                    <div class="containerForProfile alignCenter">
-                        <div class="containerForAvatar alignCenter">
-                            <div class="avatar avatarProfileTabs"></div>
-                        </div>
-                        <div class="containerName marginName name sairaRegular18 offline">
-                            Илья Иванов
-                        </div>
-                    </div>
+            <div id="parent" class="chatMembers scroll">
+                <div id="empty" class="alignCenter">
+                    <!--- Ниже блок, чтобы все участники вмещались в видимую область --->
+                    <div class="containerForAvatar"></div>
                 </div>
-                <div class="alignCenter">
-                    <div class="containerForProfile alignCenter">
-                        <div class="containerForAvatar alignCenter">
-                            <div class="avatar avatarProfileTabs"></div>
-                        </div>
-                        <div class="containerName marginName name sairaRegular18 offline">
-                            Василий Смирнов
-                        </div>
-                    </div>
-                </div>
-                <div class="alignCenter">
-                    <div class="containerForProfile alignCenter">
-                        <div class="containerForAvatar alignCenter">
-                            <div class="avatar avatarProfileTabs"></div>
-                        </div>
-                        <div class="containerName marginName name sairaRegular18 offline">
-                            Николай Кузнецов
-                        </div>
-                    </div>
-                </div>
-                <div class="alignCenter">
-                    <div class="containerForProfile alignCenter">
-                        <div class="containerForAvatar alignCenter">
-                            <div class="avatar avatarProfileTabs"></div>
-                        </div>
-                        <div class="containerName marginName name sairaRegular18 offline">
-                            Анастасия Морозова
-                        </div>
-                    </div>
-                </div>
-                <div class="alignCenter">
-                    <div class="containerForProfile alignCenter">
-                        <div class="containerForAvatar alignCenter">
-                            <div class="avatar avatarProfileTabs"></div>
-                        </div>
-                        <div class="containerName marginName name sairaRegular18 offline">
-                            Геннадий Павлов
-                        </div>
-                    </div>
-                </div>
-                <div class="alignCenter">
-                    <div class="containerForProfile alignCenter">
-                        <div class="containerForAvatar alignCenter">
-                            <div class="avatar avatarProfileTabs"></div>
-                        </div>
-                        <div class="containerName marginName name sairaRegular18">
-                            Николай Яковлев
-                        </div>
-                    </div>
-                </div>
-                <div class="alignCenter">
-                    <div class="containerForProfile alignCenter">
-                        <div class="containerForAvatar alignCenter">
-                            <div class="avatar avatarProfileTabs"></div>
-                        </div>
-                        <div class="containerName marginName name sairaRegular18">
-                            Дарья Романова
-                        </div>
-                    </div>
-                </div>
-                <div class="alignCenter">
-                    <div class="containerForProfile alignCenter">
-                        <div class="containerForAvatar alignCenter">
-                            <div class="avatar avatarProfileTabs"></div>
-                        </div>
-                        <div class="containerName marginName name sairaRegular18">
-                            Константин Фролов
-                        </div>
-                    </div>
-                </div>
-                <div class="alignCenter">
-                    <div class="containerForProfile alignCenter">
-                        <div class="containerForAvatar alignCenter">
-                            <div class="avatar avatarProfileTabs"></div>
-                        </div>
-                        <div class="containerName marginName name sairaRegular18">
-                            Роман Жуков
-                        </div>
-                    </div>
-                </div>
-                <div class="alignCenter">
-                    <div class="containerForProfile alignCenter">
-                        <div class="containerForAvatar alignCenter">
-                            <div class="avatar avatarProfileTabs"></div>
-                        </div>
-                        <div class="containerName marginName name sairaRegular18">
-                            Михаил Мартынов
-                        </div>
-                    </div>
-                </div>
-                <div class="alignCenter">
-                    <div class="containerForProfile alignCenter">
-                        <div class="containerForAvatar alignCenter">
-                            <div class="avatar avatarProfileTabs"></div>
-                        </div>
-                        <div class="containerName marginName name sairaRegular18">
-                            Макар Егоров
-                        </div>
-                    </div>
-                </div>
-                <div class="alignCenter">
-                    <div class="containerForProfile alignCenter">
-                        <div class="containerForAvatar alignCenter">
-                            <div class="avatar avatarProfileTabs"></div>
-                        </div>
-                        <div class="containerName marginName name sairaRegular18">
-                            Олеся Савельева
-                        </div>
-                    </div>
-                </div>
-                <!--- Ниже блок, чтобы все участники вмещались в видимую область --->
-                <div class="containerForAvatar"></div>
             </div>
         </div>
     </div>

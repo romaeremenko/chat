@@ -239,6 +239,17 @@
     background: #FF0000;
   }
 
+  .exit {
+    z-index: 2;
+    max-width: 16px;
+    min-width: 15px;
+    max-height: 15px;
+    min-height: 15px;
+    -webkit-border-radius: 18px;
+    -moz-border-radius: 18px;
+    border-radius: 18px;
+  }
+
   .chatNameHeader {
     height: 20px;
   }

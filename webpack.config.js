@@ -84,7 +84,7 @@ const config = {
           filename: path.basename(htmlFile),
           template: htmlFile
         });
-      })
+      }),
   ],
   optimization: isProduction ? {
     minimizer: [
