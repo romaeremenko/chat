@@ -3,22 +3,22 @@ import _ from 'lodash';
 
 import './../sass/styles.scss';
 import './../sass/responsive.scss';
-import sendIcon from './../images/send.svg';
-import boldIcon from './../images/bold.svg';
-import italicIcon from './../images/italic.svg';
-import underlineIcon from './../images/underline.svg';
-
-var sendImg = document.getElementById('sendIcon');
-sendImg.src = sendIcon;
-
-var boldImg = document.getElementById('boldIcon');
-boldImg.src = boldIcon;
-
-var italicImg = document.getElementById('italicIcon');
-italicImg.src = italicIcon;
-
-var underlineImg = document.getElementById('underlineIcon');
-underlineImg.src = underlineIcon;
+// import sendIcon from './../images/send.svg';
+// import boldIcon from './../images/bold.svg';
+// import italicIcon from './../images/italic.svg';
+// import underlineIcon from './../images/underline.svg';
+//
+// var sendImg = document.getElementById('sendIcon');
+// sendImg.src = sendIcon;
+//
+// var boldImg = document.getElementById('boldIcon');
+// boldImg.src = boldIcon;
+//
+// var italicImg = document.getElementById('italicIcon');
+// italicImg.src = italicIcon;
+//
+// var underlineImg = document.getElementById('underlineIcon');
+// underlineImg.src = underlineIcon;
 
 const o = {
     foo: {
@@ -26,9 +26,8 @@ const o = {
     }
 };
 
-
-
-var name, members;
+var messageCounter = 0;
+var name, members, person;
 
 function GetInfoAboutMessage() {
     var arrDate = [];
@@ -64,9 +63,23 @@ function GetInfoAboutMessage() {
         }
     };
 
+    this.getName = function (message) {
+        for (var i = 0; i < members.length; i++) {
+            if (members[i]["user_id"] == message["user_id"]) return members[i].username;
+        }
+    };
+
+    this.getIdPerson = function (message) {
+        for (var i = 0; i < members.length; i++) {
+            if (members[i]["user_id"] == message["user_id"]) return members[i]["user_id"];
+        }
+    };
 }
 
-function ready() {
+function loadMembers() {
+
+    members = null;
+
     var xhr = new XMLHttpRequest();
     xhr.open('GET', 'https://studentschat.herokuapp.com/users/', true);
 
@@ -89,15 +102,16 @@ function ready() {
 };
 
 function getMembers(members) {
+    var roote = document.getElementById("parent");
+    roote.innerHTML = "";
     var i = 0;
 
-    members.sort((a,b) => (a.status > b.status) ? 1 : -1);
-    members.forEach(function(member) {
+    members.sort((a, b) => (a.status > b.status) ? 1 : -1);
+    members.forEach(function (member) {
         showMember(member);
     });
 
     function showMember(member) {
-        var roote = document.getElementById("parent");
         var empty = document.getElementById("empty");
         var element = document.createElement("div");
         element.className = "alignCenter";
@@ -121,7 +135,7 @@ function getMembers(members) {
         name.appendChild(document.createTextNode(member.username));
         contForProf.appendChild(name);
         element.appendChild(contForProf);
-        roote.insertBefore(element,empty);
+        roote.insertBefore(element, empty);
     }
 
 
@@ -135,7 +149,7 @@ document.getElementById('buttonEnter').addEventListener('click', function () {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', 'https://studentschat.herokuapp.com/users/', true);
 
-    xhr.onreadystatechange = function() {
+    xhr.onreadystatechange = function () {
 
         if (xhr.readyState != 4) return;
         if (xhr.status != 200) {
@@ -146,7 +160,7 @@ document.getElementById('buttonEnter').addEventListener('click', function () {
             } catch (e) {
                 alert("Некорректный ответ " + e.message);
             }
-            getName(name,chat);
+            getName(name, chat);
         }
     }
 
@@ -155,17 +169,29 @@ document.getElementById('buttonEnter').addEventListener('click', function () {
 });
 
 function getName(name, chat) {
-    chat.forEach(function(chatInfo) {
+    chat.forEach(function (chatInfo) {
         if (chatInfo.username == name) {
-            nameuser.innerHTML = name;
-            ready();
+            nameuser.innerHTML = chatInfo.username.split(" ")[0];
+            person = chatInfo;
+            loadMembers();
+
             loadMessages();
+
+            setInterval(function () {
+                loadMembers();
+                setTimeout(
+                    function () {
+                        loadMessages();
+                    }, 1000
+                );
+            }, 3000);
+
             document.querySelector('.bg-modal').style.display = 'none';
             return 0;
         }
     });
     document.getElementById("uname").style.borderBottom = '1px solid red';
-    if(name == "") {
+    if (name == "") {
         check.innerHTML = "* Введите имя";
     } else {
         check.innerHTML = "* Неверно, попробуйте ещё раз";
@@ -178,24 +204,70 @@ document.getElementById('buttonReg').addEventListener('click', function () {
 
     xhr.open('POST', 'https://studentschat.herokuapp.com/users/register', true);
 
-    xhr.onload = function() {
-        check.innerHTML = "Регистрация прошла";
+    xhr.onload = function () {
+        check.innerHTML = "Регистрация прошла. Загрузка ...";
     };
 
-    xhr.onerror = function() {console.log("Регистрация успешна");
+    xhr.onerror = function () {
+        console.log("Регистрация успешна");
         check.innerHTML = "Регистрация не прошла";
     };
     xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify({username: name}));
+    setTimeout(
+        function () {
+            var xhr1 = new XMLHttpRequest();
+            xhr1.open('GET', 'https://studentschat.herokuapp.com/users/', true);
 
-    xhr.send(JSON.stringify({username : name}));
+            xhr1.onreadystatechange = function () {
 
-    setTimeout( function(){
-        nameuser.innerHTML = name;
+                if (xhr1.readyState != 4) return;
+                if (xhr1.status != 200) {
+                    alert(xhr1.status + ': ' + xhr1.statusText);
+                } else {
+                    try {
+                        var chat = JSON.parse(xhr1.responseText);
+                    } catch (e) {
+                        alert("Некорректный ответ " + e.message);
+                    }
+                    getName(chat);
+                }
+            }
+            xhr1.send();
+
+            function getName(chat) {
+                chat.forEach(function (chatInfo) {
+                    console.log(chatInfo + " " + name);
+                    if (chatInfo.username == name) {
+                        console.log(name + " " + chatInfo);
+                        nameuser.innerHTML = chatInfo.username.split(" ")[0];
+                        person = chatInfo;
+                        console.log(person + "2");
+                    }
+                });
+            }
+
+        }, 1000);
+
+    loadMembers();
+
+    setTimeout(function () {
         document.querySelector('.bg-modal').style.display = 'none';
-        ready();loadMessages();}, 1000);
+        loadMessages();
+        setInterval(function () {
+            loadMembers();
+            setTimeout(
+                function () {
+                    loadMessages();
+                }, 1000
+            );
+        }, 3000);
+    }, 1500);
 });
 
 function getMessages(messages, infoAboutMessage) {
+    var roote = document.getElementById("parentMessages");
+    roote.innerHTML = "";
 
     messages.forEach(function (message) {
         showMessage(message);
@@ -203,7 +275,6 @@ function getMessages(messages, infoAboutMessage) {
 
     function showMessage(message) {
         infoAboutMessage.getDate(message);
-        var roote = document.getElementById("parentMessages");
         var element = document.createElement("div");
         element.className = "chatMessage alignMessage";
 
@@ -217,8 +288,7 @@ function getMessages(messages, infoAboutMessage) {
 
         var messageText = document.createElement("div");
         messageText.classList.add("messageText", "sairaLight14");
-        console.log(name);
-        if(infoAboutMessage.getName(message) == name) {
+        if (infoAboutMessage.getIdPerson(message) == person["user_id"]) {
             boxForMessage.classList.add("boxForMessageSelf");
             messageText.classList.add("messageTextSelf");
         }
@@ -230,8 +300,9 @@ function getMessages(messages, infoAboutMessage) {
 
 
         var textBlock = document.createElement("p");
-        var text = document.createTextNode(message.message);
-        textBlock.appendChild(text);
+        textBlock.innerHTML = message.message;
+        // var text = document.createTextNode(message.message);
+        // textBlock.appendChild(text);
 
         messageText.appendChild(nameMember);
         messageText.appendChild(textBlock);
@@ -247,6 +318,9 @@ function getMessages(messages, infoAboutMessage) {
         element.appendChild(avatar);
         element.appendChild(boxForMessage);
         roote.appendChild(element);
+
+        var objDiv = document.getElementById("parentMessages");
+        objDiv.scrollTop = objDiv.scrollHeight;
     }
 
 
@@ -263,13 +337,140 @@ function loadMessages() {
         } else {
             try {
                 var messages = JSON.parse(xhrMessages.responseText);
+
             } catch (e) {
                 alert("Некорректный ответ " + e.message);
             }
-            var infoAboutMessage = new GetInfoAboutMessage();
-            getMessages(messages, infoAboutMessage);
+            if (messageCounter == 0 || messageCounter != messages.length) {
+                messageCounter = messages.length;
+                var infoAboutMessage = new GetInfoAboutMessage();
+                getMessages(messages, infoAboutMessage);
+            }
         }
     }
 
     xhrMessages.send();
 }
+
+document.getElementById('text').addEventListener('keyup', function () {
+    stringInfo(this);
+
+    function stringInfo(str) {
+
+        function GetInfoAboutInputString(str) {
+            this.str = str.replace(/<[^>]+>/g, "");
+
+            var pnctMrk = this.str.replace(/[.,+@\/#!$%\^&\*"'`;?:{}=\-_`~()]/g, "");
+            var spcs = this.str.replace(/\s+/g, '');
+            var numbers = this.str.length - this.str.replace(/[0-9]/g, "").length;
+
+            this.punctuationMarks = function () {
+                return this.str.length - pnctMrk.length;
+            };
+
+            this.spaces = function () {
+                return this.str.length - spcs.length;
+            };
+
+            this.letters = function () {
+                return this.str.length - this.spaces() - this.punctuationMarks() - numbers;
+            };
+
+        }
+
+        var info = new GetInfoAboutInputString(str.value);
+
+        if (info.str.length > 500) {
+            document.getElementById("text").value = info.str.substring(0, 500);
+        } else {
+
+            var punctuationMarks = document.getElementById("punctuationMarks");
+            var spaces = document.getElementById("spaces");
+            var letters = document.getElementById("letters");
+            var symbols = document.getElementById("symbols");
+
+            punctuationMarks.innerHTML = '';
+            spaces.innerHTML = '';
+            letters.innerHTML = '';
+            symbols.innerHTML = '';
+
+            var amountMarks = document.createTextNode(info.punctuationMarks());
+            punctuationMarks.appendChild(amountMarks);
+
+            var amountSpaces = document.createTextNode(info.spaces());
+            spaces.appendChild(amountSpaces);
+
+            var amountLetters = document.createTextNode(info.letters());
+            letters.appendChild(amountLetters);
+
+            var amountSymbols = document.createTextNode(info.str.length);
+            symbols.appendChild(amountSymbols);
+        }
+    }
+});
+
+function Test() {
+    var text = document.getElementById("text");
+    var string = document.getElementById("text").value;
+
+    var startIndex = text.selectionStart;
+    var endIndex = text.selectionEnd;
+    var range = text.value.substr(startIndex, endIndex - startIndex);
+    ;
+
+
+    this.bold = function () {
+        if (startIndex != endIndex) {
+            document.getElementById("text").value = string.substring(0, startIndex) + "<strong>" + range + "</strong>" + string.substring(endIndex);
+        }
+    };
+
+    this.italic = function () {
+        if (startIndex != endIndex) {
+            document.getElementById("text").value = string.substring(0, startIndex) + "<i>" + range + "</i>" + string.substring(endIndex);
+        }
+    };
+
+    this.underline = function () {
+        if (startIndex != endIndex) {
+            document.getElementById("text").value = string.substring(0, startIndex) + "<u>" + range + "</u>" + string.substring(endIndex);
+        }
+    };
+}
+
+document.getElementById('boldIcon').addEventListener('click', function () {
+    new Test().bold();
+});
+
+document.getElementById('italicIcon').addEventListener('click', function () {
+    new Test().italic();
+});
+
+document.getElementById('underlineIcon').addEventListener('click', function () {
+    new Test().underline();
+});
+
+document.getElementById('sendIcon').addEventListener('click', function () {
+    var string = document.getElementById("text").value;
+    var date = new Date().toISOString();
+    if (string != "") {
+
+        var xhr = new XMLHttpRequest();
+
+        xhr.open('POST', 'https://studentschat.herokuapp.com/messages', true);
+
+        xhr.onerror = function () {
+            alert("Произошла ошибка при отправлении");
+        };
+
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+        document.getElementById("text").value = "";
+
+        xhr.send(JSON.stringify({
+            datetime: date,
+            message: string,
+            user_id: person["user_id"],
+        }));
+    }
+});

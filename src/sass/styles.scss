@@ -390,9 +390,14 @@ a {
 
 .inputMessage .send {
   width: 5%;
+  margin-left: 1%;
   padding: 0 3%;
   cursor: default;
   outline: none;
+  background: url("../images/send.svg") no-repeat;
+  border: none;
+  background-color: inherit;
+  background-size: contain;
 }
 
 .editing {
@@ -403,13 +408,33 @@ a {
   margin-left: 12%;
 }
 
+.editing form {
+  margin-left: 1%;
+}
+
+.editing .bold{
+  background: url("../images/bold.svg") no-repeat;
+}
+
+.editing .italic{
+  background: url("../images/italic.svg") no-repeat;
+}
+
+.editing .underline{
+  background: url("../images/underline.svg") no-repeat;
+}
+
 .editing .bold,
 .editing .italic,
 .editing .underline {
-  width: 30px;
+  margin-left: 5px;
+  width: 25px;
   height: 17px;
   cursor: default;
   outline: none;
+  border: none;
+  background-color: inherit;
+  background-size: contain;
 }
 
 .editing img {
