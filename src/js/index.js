@@ -3,22 +3,6 @@ import _ from 'lodash';
 
 import './../sass/styles.scss';
 import './../sass/responsive.scss';
-// import sendIcon from './../images/send.svg';
-// import boldIcon from './../images/bold.svg';
-// import italicIcon from './../images/italic.svg';
-// import underlineIcon from './../images/underline.svg';
-//
-// var sendImg = document.getElementById('sendIcon');
-// sendImg.src = sendIcon;
-//
-// var boldImg = document.getElementById('boldIcon');
-// boldImg.src = boldIcon;
-//
-// var italicImg = document.getElementById('italicIcon');
-// italicImg.src = italicIcon;
-//
-// var underlineImg = document.getElementById('underlineIcon');
-// underlineImg.src = underlineIcon;
 
 const o = {
     foo: {
@@ -26,13 +10,32 @@ const o = {
     }
 };
 
-var messageCounter = 0;
-var name, members, person;
+var messageDate = 0;
+var name, members, person, infoAboutMessage;
+var chatRoomsDate = [];
+var online = 0;
+var messagesForRoom = [{
+    "user_id": "537818528",
+    "message": "Test message 1",
+    "chatroom_id": "537818528",
+    "datetime": "2019-06-28T00:16:12.343Z"
+}, {
+    "user_id": "1238261095",
+    "message": "Test message 2",
+    "chatroom_id": "1238261095",
+    "datetime": "2019-06-28T00:18:57.669Z"
+}, {
+    "user_id": "537818528",
+    "message": "Test",
+    "chatroom_id": "537818528",
+    "datetime": "2019-06-30T00:20:18.765Z"
+}];
+
 
 function GetInfoAboutMessage() {
     var arrDate = [];
 
-    function check(date) {
+    function check(date, room_id) {
         if (arrDate.indexOf(date) == -1) {
             arrDate.push(date);
 
@@ -42,8 +45,14 @@ function GetInfoAboutMessage() {
             var text = document.createTextNode(date);
             dateMessage.appendChild(text);
             dateBox.appendChild(dateMessage);
-            var roote = document.getElementById("parentMessages");
-            roote.appendChild(dateBox);
+
+            var tabsRoom = document.getElementsByClassName("chatLogs scroll");
+
+            for (var i = 0; i < tabsRoom.length; i++) {
+                if (room_id == tabsRoom[i].getAttribute('data-chatID')) {
+                    tabsRoom[i].appendChild(dateBox);
+                }
+            }
         }
 
     }
@@ -52,24 +61,20 @@ function GetInfoAboutMessage() {
         return message.datetime.substr(11, 5);
     };
 
-    this.getDate = function (message) {
+    this.getDate = function (message, room_id) {
         var date = message.datetime.substr(0, 10);
-        check(date);
+        check(date, room_id);
     };
 
     this.getName = function (message) {
-        for (var i = 0; i < members.length; i++) {
-            if (members[i]["user_id"] == message["user_id"]) return members[i].username;
-        }
-    };
-
-    this.getName = function (message) {
+        if (members.length == 0) return 0;
         for (var i = 0; i < members.length; i++) {
             if (members[i]["user_id"] == message["user_id"]) return members[i].username;
         }
     };
 
     this.getIdPerson = function (message) {
+        if (members.length == 0) return 0;
         for (var i = 0; i < members.length; i++) {
             if (members[i]["user_id"] == message["user_id"]) return members[i]["user_id"];
         }
@@ -102,8 +107,8 @@ function loadMembers() {
 };
 
 function getMembers(members) {
-    var roote = document.getElementById("parent");
-    roote.innerHTML = "";
+    var root = document.getElementById("parent");
+    root.innerHTML = "";
     var i = 0;
 
     members.sort((a, b) => (a.status > b.status) ? 1 : -1);
@@ -133,9 +138,11 @@ function getMembers(members) {
 
         contForProf.appendChild(contForAvatar);
         name.appendChild(document.createTextNode(member.username));
+        name.setAttribute("data-userID", member["user_id"]);
         contForProf.appendChild(name);
         element.appendChild(contForProf);
-        roote.insertBefore(element, empty);
+
+        root.insertBefore(element, empty);
     }
 
 
@@ -171,11 +178,20 @@ document.getElementById('buttonEnter').addEventListener('click', function () {
 function getName(name, chat) {
     chat.forEach(function (chatInfo) {
         if (chatInfo.username == name) {
-            nameuser.innerHTML = chatInfo.username.split(" ")[0];
+            var containerName = chatInfo.username.split(" ")[0];
+
+            if (containerName.length > 6) {
+                containerName = containerName.substr(0, 4) + "...";
+            }
+            nameuser.innerHTML = containerName;
+
             person = chatInfo;
+
             loadMembers();
 
             loadMessages();
+
+            setOnlineStatus();
 
             setInterval(function () {
                 loadMembers();
@@ -237,12 +253,14 @@ document.getElementById('buttonReg').addEventListener('click', function () {
 
             function getName(chat) {
                 chat.forEach(function (chatInfo) {
-                    console.log(chatInfo + " " + name);
                     if (chatInfo.username == name) {
-                        console.log(name + " " + chatInfo);
-                        nameuser.innerHTML = chatInfo.username.split(" ")[0];
+                        var containerName = chatInfo.username.split(" ")[0];
+
+                        if (containerName.length > 6) {
+                            containerName = containerName.substr(0, 4) + "...";
+                        }
+                        nameuser.innerHTML = containerName;
                         person = chatInfo;
-                        console.log(person + "2");
                     }
                 });
             }
@@ -250,6 +268,8 @@ document.getElementById('buttonReg').addEventListener('click', function () {
         }, 1000);
 
     loadMembers();
+
+    setOnlineStatus();
 
     setTimeout(function () {
         document.querySelector('.bg-modal').style.display = 'none';
@@ -265,16 +285,39 @@ document.getElementById('buttonReg').addEventListener('click', function () {
     }, 1500);
 });
 
-function getMessages(messages, infoAboutMessage) {
-    var roote = document.getElementById("parentMessages");
-    roote.innerHTML = "";
+function getMessages(messages) {
+    var root = document.getElementById("parentMessages");
+    var lengthMessages = messages.length - 1;
+    if (messageDate == 0) {
+        setCounterBlock("MAIN");
+        infoAboutMessage = new GetInfoAboutMessage();
+        root.innerHTML = "";
+        messages.forEach(function (message) {
+            showMessage(message);
+        });
+        messageDate = messages[lengthMessages].datetime;
 
-    messages.forEach(function (message) {
-        showMessage(message);
-    });
+    }
+
+    if (messageDate != messages[lengthMessages].datetime) {
+        var newStart;
+
+        for (var i = 0; i < messages.length; i++) {
+            if (messages[i]["datetime"] == messageDate) {
+                newStart = i + 1;
+                messageDate = messages[i + 1]["datetime"];
+                break;
+            }
+        }
+
+        for (; newStart < messages.length; newStart++) {
+            showMessage(messages[newStart]);
+        }
+    }
+    setCounter("MAIN", lengthMessages);
 
     function showMessage(message) {
-        infoAboutMessage.getDate(message);
+        infoAboutMessage.getDate(message, "MAIN");
         var element = document.createElement("div");
         element.className = "chatMessage alignMessage";
 
@@ -301,8 +344,6 @@ function getMessages(messages, infoAboutMessage) {
 
         var textBlock = document.createElement("p");
         textBlock.innerHTML = message.message;
-        // var text = document.createTextNode(message.message);
-        // textBlock.appendChild(text);
 
         messageText.appendChild(nameMember);
         messageText.appendChild(textBlock);
@@ -317,7 +358,7 @@ function getMessages(messages, infoAboutMessage) {
 
         element.appendChild(avatar);
         element.appendChild(boxForMessage);
-        roote.appendChild(element);
+        root.appendChild(element);
 
         var objDiv = document.getElementById("parentMessages");
         objDiv.scrollTop = objDiv.scrollHeight;
@@ -341,11 +382,8 @@ function loadMessages() {
             } catch (e) {
                 alert("Некорректный ответ " + e.message);
             }
-            if (messageCounter == 0 || messageCounter != messages.length) {
-                messageCounter = messages.length;
-                var infoAboutMessage = new GetInfoAboutMessage();
-                getMessages(messages, infoAboutMessage);
-            }
+            getMessages(messages);
+
         }
     }
 
@@ -356,6 +394,10 @@ document.getElementById('text').addEventListener('keyup', function () {
     stringInfo(this);
 
     function stringInfo(str) {
+        var info = new GetInfoAboutInputString(str.value);
+        if (info.str.length > 500) {
+            document.getElementById("text").value = info.str.substring(0, 500);
+        }
 
         function GetInfoAboutInputString(str) {
             this.str = str.replace(/<[^>]+>/g, "");
@@ -380,32 +422,28 @@ document.getElementById('text').addEventListener('keyup', function () {
 
         var info = new GetInfoAboutInputString(str.value);
 
-        if (info.str.length > 500) {
-            document.getElementById("text").value = info.str.substring(0, 500);
-        } else {
+        var punctuationMarks = document.getElementById("punctuationMarks");
+        var spaces = document.getElementById("spaces");
+        var letters = document.getElementById("letters");
+        var symbols = document.getElementById("symbols");
 
-            var punctuationMarks = document.getElementById("punctuationMarks");
-            var spaces = document.getElementById("spaces");
-            var letters = document.getElementById("letters");
-            var symbols = document.getElementById("symbols");
+        punctuationMarks.innerHTML = '';
+        spaces.innerHTML = '';
+        letters.innerHTML = '';
+        symbols.innerHTML = '';
 
-            punctuationMarks.innerHTML = '';
-            spaces.innerHTML = '';
-            letters.innerHTML = '';
-            symbols.innerHTML = '';
+        var amountMarks = document.createTextNode(info.punctuationMarks());
+        punctuationMarks.appendChild(amountMarks);
 
-            var amountMarks = document.createTextNode(info.punctuationMarks());
-            punctuationMarks.appendChild(amountMarks);
+        var amountSpaces = document.createTextNode(info.spaces());
+        spaces.appendChild(amountSpaces);
 
-            var amountSpaces = document.createTextNode(info.spaces());
-            spaces.appendChild(amountSpaces);
+        var amountLetters = document.createTextNode(info.letters());
+        letters.appendChild(amountLetters);
 
-            var amountLetters = document.createTextNode(info.letters());
-            letters.appendChild(amountLetters);
+        var amountSymbols = document.createTextNode(info.str.length);
+        symbols.appendChild(amountSymbols);
 
-            var amountSymbols = document.createTextNode(info.str.length);
-            symbols.appendChild(amountSymbols);
-        }
     }
 });
 
@@ -451,26 +489,316 @@ document.getElementById('underlineIcon').addEventListener('click', function () {
 });
 
 document.getElementById('sendIcon').addEventListener('click', function () {
+    var idRoom = document.getElementById("headerNameChat").getAttribute("data-headername");
     var string = document.getElementById("text").value;
     var date = new Date().toISOString();
-    if (string != "") {
+    if (string.replace(/\s+/g, '')) {
+        if (idRoom == "MAIN") {
+            var xhr = new XMLHttpRequest();
 
-        var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'https://studentschat.herokuapp.com/messages', true);
 
-        xhr.open('POST', 'https://studentschat.herokuapp.com/messages', true);
+            xhr.onerror = function () {
+                alert("Произошла ошибка при отправлении");
+            };
 
-        xhr.onerror = function () {
-            alert("Произошла ошибка при отправлении");
-        };
+            xhr.setRequestHeader('Content-Type', 'application/json');
 
-        xhr.setRequestHeader('Content-Type', 'application/json');
+            document.getElementById("text").value = "";
 
-        document.getElementById("text").value = "";
+            xhr.send(JSON.stringify({
+                datetime: date,
+                message: string,
+                user_id: person["user_id"],
+            }));
+        } else {
+            var rooms = document.getElementsByClassName("chatLogs scroll");
 
-        xhr.send(JSON.stringify({
-            datetime: date,
-            message: string,
-            user_id: person["user_id"],
-        }));
+            for (var i = 0; i < rooms.length; i++) {
+                if (idRoom == rooms[i].getAttribute('data-chatID')) {
+                    var dateMessage = [];
+                    dateMessage["datetime"] = new Date().toISOString();
+
+                    chatRoomsDate[idRoom].getDate(dateMessage, idRoom);
+                    createMessageForRoom(rooms, i, idRoom, date, string);
+                }
+            }
+            document.getElementById("text").value = "";
+            var count = document.querySelector('[data-chatRoomAmount= "' + idRoom + '"]');
+            if (+count.innerText == 0) {
+                setCounterBlock(idRoom);
+            }
+            count = +count.innerText + 1
+            setCounter(idRoom, count);
+        }
     }
 });
+
+document.querySelector('#parent').addEventListener('click', function (event) {
+    var userId = event.target.getAttribute('data-userID');
+    var tabsRoom2 = document.getElementsByClassName("chatLogs scroll");
+    if (event.target.getAttribute('data-userID') == person["user_id"] || userId == null) return false;
+    if (!checkRoom(event)) {
+        for (var i = 0; i < tabsRoom2.length; i++) {
+            if (userId == tabsRoom2[i].getAttribute('data-chatID')) {
+                setHeaderName(userId);
+                tabsRoom2[i].style.display = "block";
+            } else {
+                tabsRoom2[i].style.display = "none";
+            }
+        }
+        return false;
+    }
+
+    var root = document.getElementById("chatRooms");
+
+    var empty = document.getElementById("emptyRoom");
+    var element = document.createElement("div");
+    element.className = "alignLeft chatRoomId";
+    var contForProf = document.createElement("div");
+    contForProf.classList.add("containerForProfile", "alignCenter");
+
+    var contForAvatar = document.createElement("div");
+    contForAvatar.classList.add("containerForAvatar", "alignCenter");
+    var avatar = document.createElement("div");
+    avatar.classList.add("avatar", "avatarProfileTab");
+    avatar.setAttribute("data-chatRoomAmount", userId);
+    contForAvatar.appendChild(avatar);
+
+    var name = document.createElement("div");
+    name.classList.add("containerName", "marginName", "name", "sairaRegular18");
+
+    contForProf.appendChild(contForAvatar);
+    name.appendChild(document.createTextNode(event.target.innerHTML));
+    element.setAttribute("data-chatRoomUserID", userId);
+    contForProf.appendChild(name);
+    element.appendChild(contForProf);
+
+    root.insertBefore(element, empty);
+
+    getMessagesForRoom(messagesForRoom, userId);
+
+    var tabsRoom = document.getElementsByClassName("chatLogs scroll");
+
+    for (var i = 0; i < tabsRoom.length; i++) {
+        if (userId == tabsRoom[i].getAttribute('data-chatID')) {
+            tabsRoom[i].style.display = "block";
+        } else {
+            tabsRoom[i].style.display = "none";
+        }
+    }
+
+    setActive(userId);
+
+});
+
+function checkRoom(event) {
+    if (event.target.className == 'containerName marginName name sairaRegular18' ||
+        event.target.className == 'containerName marginName name sairaRegular18 online') {
+        var tabsRoom = document.getElementsByClassName("chatRoomId");
+        for (var i = 0; i < tabsRoom.length; i++) {
+            if (event.target.getAttribute('data-userID') == tabsRoom[i].getAttribute('data-chatRoomUserID')) return false;
+        }
+        return true;
+    }
+}
+
+document.querySelector('#chatRooms').addEventListener('click', function (event) {
+    if (event.target.className == "alignLeft chatRoomId") {
+        var roomID = event.target.getAttribute('data-chatRoomUserID');
+        var tabsRoom = document.getElementsByClassName("chatLogs scroll");
+        for (var i = 0; i < tabsRoom.length; i++) {
+            if (roomID == tabsRoom[i].getAttribute('data-chatID')) {
+                setHeaderName(roomID);
+                tabsRoom[i].style.display = "block";
+            } else {
+                tabsRoom[i].style.display = "none";
+            }
+        }
+    }
+});
+
+function getMessagesForRoom(messages, id) {
+    var count = 0;
+    var room = document.createElement("div");
+    room.classList.add("chatLogs", "scroll");
+    room.setAttribute("data-chatID", id);
+    var root = document.getElementById("messages");
+    root.appendChild(room);
+    var infoAboutMessageForRoom = new GetInfoAboutMessage();
+
+    messages.forEach(function (message) {
+        if (message["chatroom_id"] == room.getAttribute("data-chatID")) {
+            count++;
+            showMessage(message, id);
+        }
+    });
+    chatRoomsDate[id] = infoAboutMessageForRoom;
+
+    setHeaderName(id);
+
+    if (count != 0) {
+        setCounterBlock(id);
+        setCounter(id, count);
+    }
+
+    function showMessage(message, room_id) {
+        infoAboutMessageForRoom.getDate(message, room_id);
+        var element = document.createElement("div");
+        element.className = "chatMessage alignMessage";
+
+        var avatar = document.createElement("div");
+        avatar.classList.add("chatAvatar");
+        element.appendChild(avatar);
+
+        var boxForMessage = document.createElement("div");
+        boxForMessage.classList.add("boxForMessage");
+
+
+        var messageText = document.createElement("div");
+        messageText.classList.add("messageText", "sairaLight14");
+        if (infoAboutMessageForRoom.getIdPerson(message) == person["user_id"]) {
+            boxForMessage.classList.add("boxForMessageSelf");
+            messageText.classList.add("messageTextSelf");
+        }
+
+        var nameMember = document.createElement("div");
+        nameMember.classList.add("name", "sairaRegular18");
+        var nameDeliver = document.createTextNode(infoAboutMessageForRoom.getName(message));
+
+        nameMember.appendChild(nameDeliver);
+
+
+        var textBlock = document.createElement("p");
+        textBlock.innerHTML = message.message;
+
+        messageText.appendChild(nameMember);
+        messageText.appendChild(textBlock);
+
+        var timeMessage = document.createElement("div");
+        timeMessage.classList.add("timeMessage", "sairaLight14");
+        var time = document.createTextNode(infoAboutMessageForRoom.getTime(message));
+        timeMessage.appendChild(time);
+
+        boxForMessage.appendChild(messageText);
+        boxForMessage.appendChild(timeMessage);
+
+        element.appendChild(avatar);
+        element.appendChild(boxForMessage);
+        room.appendChild(element);
+
+
+        var objDiv = document.getElementById("parentMessages");
+        objDiv.scrollTop = objDiv.scrollHeight;
+    }
+
+
+}
+
+function setHeaderName(id) {
+    var member = [];
+    member["user_id"] = id;
+    var infoAboutMessageForRoom = new GetInfoAboutMessage();
+    document.getElementById("headerNameChat").setAttribute("data-headerName", id);
+    if (member["user_id"] == "MAIN") {
+        document.getElementById("headerNameChat").innerText = "MAIN";
+    } else {
+        document.getElementById("headerNameChat").innerText = infoAboutMessageForRoom.getName(member);
+    }
+
+    setActive(id);
+
+}
+
+function setActive(userId) {
+    var active = document.getElementsByClassName("alignLeft chatRoomId");
+    for (var i = 0; i < active.length; i++) {
+        if (userId == active[i].getAttribute('data-chatroomuserid')) {
+            active[i].className = "alignLeft chatRoomId active";
+        } else {
+            active[i].className = "alignLeft chatRoomId";
+        }
+    }
+}
+
+function createMessageForRoom(rooms, i, idRoom, date, string) {
+    var element = document.createElement("div");
+    element.className = "chatMessage alignMessage";
+
+    var avatar = document.createElement("div");
+    avatar.classList.add("chatAvatar");
+    element.appendChild(avatar);
+
+    var boxForMessage = document.createElement("div");
+    boxForMessage.classList.add("boxForMessage", "boxForMessageSelf");
+
+
+    var messageText = document.createElement("div");
+    messageText.classList.add("messageText", "sairaLight14", "messageTextSelf");
+
+    var nameMember = document.createElement("div");
+    nameMember.classList.add("name", "sairaRegular18");
+    var nameDeliver = document.createTextNode(person["username"]);
+
+    nameMember.appendChild(nameDeliver);
+
+    var textBlock = document.createElement("p");
+    textBlock.innerHTML = string;
+
+    messageText.appendChild(nameMember);
+    messageText.appendChild(textBlock);
+
+    var timeMessage = document.createElement("div");
+    timeMessage.classList.add("timeMessage", "sairaLight14");
+    var time = document.createTextNode(date.substr(11, 5));
+    timeMessage.appendChild(time);
+
+    boxForMessage.appendChild(messageText);
+    boxForMessage.appendChild(timeMessage);
+
+    element.appendChild(avatar);
+    element.appendChild(boxForMessage);
+    rooms[i].appendChild(element);
+
+    var objDiv = document.querySelector('[data-chatID= "' + idRoom + '"]');
+    objDiv.scrollTop = objDiv.scrollHeight;
+}
+
+function setCounter(id, count) {
+    var parentCounter = document.querySelector('[data-chatRoomCounter= "' + id + '"]');
+    parentCounter.innerText = count;
+}
+
+function setCounterBlock(id) {
+    var parentCounter = document.querySelector('[data-chatRoomAmount= "' + id + '"]');
+    var element = document.createElement("div");
+
+    element.className = "counter sairaLight14 alignCenter";
+    element.setAttribute("data-chatRoomCounter", id);
+    parentCounter.appendChild(element);
+}
+
+function startTime() {
+    var tm = new Date();
+    var h = tm.getHours();
+    var m = tm.getMinutes();
+    m = checkTime(m);
+    document.getElementById('time').innerHTML = h + ":" + m;
+}
+
+function checkTime(i) {
+    if (i < 10) {
+        i = "0" + i;
+    }
+    return i;
+}
+
+function setOnlineStatus() {
+    setInterval(function () {
+        startTime()
+    }, 1000);
+    setInterval(function () {
+        online += 5;
+        document.getElementById('onlineTime').innerHTML = "в сети " + online + " минут";
+    }, 1000 * 60 * 5);
+}
